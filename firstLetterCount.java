@@ -23,15 +23,16 @@ public class first {
     
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      String s = value.toString();
-      s = s.toUpperCase();
-      String f = new String();
-String[] arr = s.split(" ");
- ArrayList<String> list = new ArrayList<String>();
-      for (String str : arr){
-          if (!str.equals("")){
-        list.add(str);
-    }
+      String s = value.toString();                                  // Convert varible doc to String and assign to String S
+      s = s.toUpperCase();      
+      String f = new String();                                     // init f that will hold first letters later                                   
+      String[] arr = s.split(" ");                                 // split s after every word by delimiter space
+      ArrayList<String> list = new ArrayList<String>();           
+      for (String str : arr){                                     // this forloop will remove any extra double spaces in the input, this is important
+                                                                  // to avoid stringindex out of bounds error.
+          if (!str.equals("")){               
+            list.add(str);
+          }
       }
       arr = list.toArray(new String[list.size()]);
 
@@ -41,11 +42,11 @@ String[] arr = s.split(" ");
 
         for(int i = 0; i<arr.length;i++){
             char c = arr[i].charAt(0);
-            f+=" "+c;
+            f+=" "+c;                                            // convert the input array to a single string so that we can feed to stringTokenizer
             // String sub = arr[i].substring(1);
         }
 
-      StringTokenizer itr = new StringTokenizer(f);
+      StringTokenizer itr = new StringTokenizer(f);             // the stringTokenizer tokens each letter
       while (itr.hasMoreTokens()) {
         word.set(itr.nextToken());
         context.write(word, one);
