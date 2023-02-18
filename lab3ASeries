@@ -1,0 +1,49 @@
+from pyspark import SparkConf, SparkContext
+conf = (SparkConf()
+        .setMaster("local")            
+        .setAppName("My app")
+        .set("spark.executor.memory", "1g"))
+sc = SparkContext(conf = conf)
+# rdd = sc.parallelize([('a',7),('a',2),('b',2)])
+rddEn = sc.textFile("europarl-v7.sv-en.en")
+rddSv = sc.textFile("europarl-v7.sv-en.sv")
+# rdd.take(6)
+#count the number of 
+# print("English count :",rddEn.count()) 
+# print("Swedish Count :",rddSv.count())
+
+# print("English Partitions",rddEn.getNumPartitions())
+# print("Swedish Partitions",rddSv.getNumPartitions())
+
+def LowerCaseAndSplit(lines):
+    lines = lines.lower()
+    lines = lines.split()
+    return lines
+rddA2En = rddEn.map(LowerCaseAndSplit)
+# rddA2Sv = rddSv.map(LowerCaseAndSplit)
+# print("English after preProc top 10",rddA2En.take(10))
+# print()
+# print("Swedish after preProc top 10",rddA2Sv.take(10))
+# print()
+# print("English count after preProc",rddA2En.count())
+# print("Swedish count after preProc",rddA2Sv.count())
+
+# freq occuring words
+def countEnglish():
+    rddEnFlat = rddEn.flatMap(LowerCaseAndSplit)
+    rddMap = rddEnFlat.map(lambda x:(x,1))
+    rddGrouped = rddMap.groupByKey()
+    rddFreq = rddGrouped.mapValues(sum).map(lambda x: (x[1],x[0])).sortByKey(False)
+    print()
+    return rddFreq.take(10)
+def countSwedish():
+    rddEnFlat = rddSv.flatMap(LowerCaseAndSplit)
+    rddMap = rddEnFlat.map(lambda x:(x,1))
+    rddGrouped = rddMap.groupByKey()
+    rddFreq = rddGrouped.mapValues(sum).map(lambda x: (x[1],x[0])).sortByKey(False)
+    print()
+    return rddFreq.take(10)
+    
+print("freq English words: ",countEnglish())
+print("freq Swedish words: ",countSwedish())
+
