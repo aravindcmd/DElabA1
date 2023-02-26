@@ -1,0 +1,66 @@
+# sqlContext = SQLContext(spark_session.sparkContext)
+# sqlContext
+
+# df = sqlContext.read.csv("hdfs://192.168.2.122:9000/parking-citations.csv",header='true', inferSchema='true').cache()
+# # df = sqlContext.read.csv("hdfs://<YOUR IP >:9000/parking-citations.csv",header='true', inferSchema='true').cache()
+
+# # b1
+# # df.show()
+
+# # b2
+# # df.printSchema()
+
+# # b3
+# # df.count()
+
+# # b4
+# # df.rdd.getNumPartitions()
+
+# # B.5
+# # df.drop("VIN","Latitude","Longitude").printSchema()
+
+# # B.6
+# # df = df.filter(df['Fine amount'] > 1)
+# # df = df.groupBy("Fine amount").count()
+# # df.sort(desc("Fine amount")).show()
+
+# # df = df.filter(df['Color'].isNotNull())
+# # df.show()
+
+# # # b7
+# # df = df.groupBy("Make").count()
+# # df.sort(desc("count")).show()
+
+# # b8
+# COLORS = { 
+# 'AL':'Aluminum', 'AM':'Amber', 'BG':'Beige', 'BK':'Black', 'BL':'Blue', 
+# 'BN':'Brown', 'BR':'Brown', 'BZ':'Bronze', 'CH':'Charcoal', 'DK':'Dark', 
+# 'GD':'Gold', 'GO':'Gold', 'GN':'Green', 'GY':'Gray', 'GT':'Granite', 
+# 'IV':'Ivory', 'LT':'Light', 'OL':'Olive', 'OR':'Orange', 'MR':'Maroon', 
+# 'PK':'Pink', 'RD':'Red', 'RE':'Red', 'SI':'Silver', 'SL':'Silver', 
+# 'SM':'Smoke', 'TN':'Tan', 'VT':'Violet', 'WT':'White', 'WH':'White', 
+# 'YL':'Yellow', 'YE':'Yellow', 'UN':'Unknown' 
+# }
+
+# cdf = pd.DataFrame(COLORS.items(), columns=["name", "full"])
+# # cdf
+# # df = df.toPandas()
+
+# # df2.to_frame()
+# # df_cdf = pd.merge(df, cdf, how='inner', left_on = 'Color', right_on = 'name')
+# # df_cdf = pd.merge(df, cdf, how='inner', left_on = 'Color', right_on = 'name')
+
+# sparkDF=spark_session.createDataFrame(cdf) 
+
+# print(type(df))
+# print(type(cdf))
+# print(type(sparkDF))
+
+# df = df.join(sparkDF, df.Color == sparkDF.name, 'inner')
+# df = df.filter(df["Make"] == "TOYT")
+# df = df.groupBy("Make","full").count()
+# df.sort(desc("count")).show()
+
+
+# # df.select("Color","full").show()
+
